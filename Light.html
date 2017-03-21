@@ -1,0 +1,234 @@
+
+
+		<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - Light</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/styles/default.css" rel="stylesheet" >
+  	<script src="js/highlight.pack.js"></script>
+  	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="LEDs.html">LEDs</a>
+              </li>
+              <li>
+                  <a href="Button.html">Button</a>
+              </li>
+              <li>
+                  <a href="#">Light</a>
+              </li>
+              <li>
+                  <a href="Temperature.html">Temperature</a>
+              </li>
+              <li>
+                  <a href="Accelerometer.html">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="InfraRed.html">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+											<div class="page-header">
+                                  <h1>Light Sensor</h1>
+          						</div>
+											<img src="img/light.png" height="45%" width="45%" align="right">
+                        <p class="lead">Suyash the lion is on an adventure with his friends; they are trying to find a great spot for a picnic. The route they are taking goes through fields, into dark forests, past rivers, into caves, up and over hills and more. Even though it’s lunchtime with light outside, the forest and the cave are very very dark, but none of Suyash and his friends own a torch! To make matters worse, they all have their hands full of food and blankets for the picnic, so even if they did have a torch they wouldn’t be able to turn it on and off.
+						<br><br>Luckily, Carlo the Caterpillar brought his Engduino along with him! In this tutorial, we will show you how to make a torch that comes on automatically when it’s dark, and fades out when it is light again.</p>
+
+						<br><p class="lead">The library files to include the Light Sensor and LEDs functions that we will use</p>
+
+<pre><code>#include "EngduinoLights.h"
+#include "EngduinoLEDs.h"
+void setup() {
+
+}
+void loop() {
+
+}</code></pre>
+                        <p class="lead">In void setup we use the .begin() function for both the libraries so that we can on the sensors.</p>
+<pre><code>#include "EngduinoLights.h"
+#include "EngduinoLEDs.h"
+void setup() {
+	EngduinoLight.begin();
+	EngduinoLEDs.begin();
+}
+void loop() {
+
+}</code></pre>
+						<p class="lead">In the loop we have the function EngduinoLight.lightLevel(). This function measures the light intensity around the engduino and returns the value of the light sensitivity which is then assigned to a integer light. The light intensity is between 0-1000.</p>
+<pre><code>#include "EngduinoLights.h"
+#include "EngduinoLEDs.h"
+void setup() {
+	EngduinoLight.begin();
+	EngduinoLEDs.begin();
+}
+void loop() {
+	int light = EngduinoLight.lightLevel();
+}</code></pre>
+						<p class="lead">
+						Now that we have the light intensity value we need to change the brightness of the LEDs depending on how bright it is. The brighter it is the higher the light intensity value. Hence our LED brightness should be lower. So how can we do this?
+						<br>Well we could use a statement called if-else. If works by taking a statement in the brackets and if the statement is true it executes what’s inside the curly brackets. If-else works similarly to if. It first checks the statement for if. If the statement is true it executes the code in the if block. However if the statement is false it checks the else if statement. If the else if statement is true it executes the code in the else if block. We can have many else if statements and the program goes through each of them until it hits the first else if statement which is true. If you have 5 else if statements and the first one is true the program doesn't go through the other else if statements after it even if they are true.
+						</p>
+
+<pre><code>if(statement) {
+  //do something
+}
+else if(another statement) {
+ //do something else
+}
+else {
+  // if none of the above statements are true then do something else
+}</code></pre>
+
+						<p class="lead">
+						So in our case our statement will check if our light intensity is greater than a certain value and if it is we will on the LEDs and make the LEDs give out a white light with a certain brightness.<br><br>
+
+						Recall that EngduinoLEDs.setLED(5,WHITE,10) means that on the LED number 5 and make it give out a white light with brightness 10.<br><br>
+
+						Recall that brightness ranges from 0 (off) to 15 (max). Also since there are 16 LEDs they are labeled from 0 to 15 (inclusive). <br><br>
+
+						Since the light sensor is between LED 6 and 9 we will not use those LEDs as if they are on their brightness can interfere with the actual brightness giving us wrong values. That is why we use a for statement.
+						The first for statement for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,5) basically ons all the LEDs from 0 to 5 and makes it give out a white light with brightness 5. The second for statement does the same
+						thing with the difference being that it ons all the LEDs from 10 to 15. This is a quick way to on all the LEDs except the LEDs 6,7,8 and 9.<br><br>
+
+						if(light>900) checks if your light value is greater than 900. If it is it enters the if and executes the for statement in the if statement. <br><br>
+						Else if(light>720) checks if your light value is greater than 720. If it is it enters the else if and executes the for statement in the else if statement. <br><br>
+						There are more else if statements with different conditions. The program executes the for statement for the else if statement which is true. <br><br>
+
+						Since the code is in a loop it keeps on getting a value for the light intensity, checks it in a series of if and else if statements and then takes the necessary action by changing the brightness of the LEDs between 0(off) and 15(max).
+						</p>
+
+<pre><code>#include "EngduinoLight.h"
+#include "EngduinoLEDs.h"
+
+void setup() {
+ EngduinoLight.begin();
+ EngduinoLEDs.begin();
+}
+
+void loop() {
+ int light = EngduinoLight.lightLevel();
+
+ if(light>900){
+   for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,0);
+   for(int i=10;i<16;i++) EngduinoLEDs.setLED(i,WHITE,0);
+ }
+ else if(light> 720){
+	 for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,3);
+	 for(int i=10;i<16;i++) EngduinoLEDs.setLED(i,WHITE,3);
+ }
+
+ else if(light>540){
+	 for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,6);
+	 for(int i=10;i<16;i++) EngduinoLEDs.setLED(i,WHITE,6);
+ }
+
+ else if(light>360){
+	 for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,9);
+	 for(int i=10;i<16;i++) EngduinoLEDs.setLED(i,WHITE,9);
+ }
+
+ else if(light>180){
+	 for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,12);
+	 for(int i=10;i<16;i++) EngduinoLEDs.setLED(i,WHITE,12);
+ }
+
+ else if(light>50){
+	 for(int i=0;i<6;i++) EngduinoLEDs.setLED(i,WHITE,15);
+	 for(int i=10;i<16;i++) EngduinoLEDs.setLED(i,WHITE,15);
+ }
+}</code></pre><br>
+
+
+						<p class="lead">Great! So we can now use Engduino’s light sensors to create a torch which will light up depending on how dark it is. Now Suyash and his friends can go along on their journey without having to worry about the scary night. Here are some challenges for you to try to maybe improve the device…</p>
+
+            <p class="lead"><u>Further problems:</u></p>
+            <ul>
+              <li style="font-size:18px">Change the colours of the torch to whatever you like depending on the light intensity levels. White can be a bit boring so it’ll be nice to jazz it up a bit!</li>
+              <li style="font-size:18px">Change the amount of LEDs that light up at different light levels. If it's really bright then only use a couple. The darker it gets the more you’ll need so add more when you do.</li>
+              <li style="font-size:18px">Use the Serial.println() function to show the values of the light sensor on your screen.</li>
+            </ul>
+
+						<p class="lead"><u>Summary:</u></p>
+            <ul>
+              <li style="font-size:18px">IF statements can be used to do different tasks depending on the requirements you set. </li>
+              <li style="font-size:18px">You can read the light sensor values by using the EngduinoLight.lightLevel() function.</li>
+              <li style="font-size:18px">The Engduino’s light sensor values range from 0 to 1000, with 0 being completely dark and 1000 being super bright.</li>
+              <li style="font-size:18px">You can say how bright an LED will light up by setting a number between 0 and 15 in the third slot of the function EngduinoLEDs.setLED(i, WHITE, 0) .</li>
+            </ul>
+            <p class="lead"><u>Further reading:</u></p>
+            <ul>
+              <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_LightSensor.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_LightSensor.pdf</a></li>
+              <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduino_if.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduino_if.pdf</a></li>
+            </ul>
+            <a href="Temperature.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="Button.html" class="btn btn-default">Previous</a><br><br>
+          </div>
+                </div>
+            </div>
+        </div>
+
+	</div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

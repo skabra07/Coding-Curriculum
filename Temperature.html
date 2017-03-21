@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - Temperature</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+
+	<link rel="stylesheet" href="css/styles/default.css">
+	<script src="js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="LEDs.html">LEDs</a>
+              </li>
+              <li>
+                  <a href="Button.html">Button</a>
+              </li>
+              <li>
+                  <a href="Light.html">Light</a>
+              </li>
+              <li>
+                  <a href="#">Temperature</a>
+              </li>
+              <li>
+                  <a href="Accelerometer.html">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="InfraRed.html">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+		<!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+						<div class="page-header">
+                        <h1>Temperature</h1>
+						</div>
+            <img src="img/temperature.png" height="45%" width="45%" align="right">
+                        <p class="lead">
+						Suyash the lion has invited his friend Penny the penguin round to his house. Suyash is used to the hot weather in Africa, but Penny loves the cold ice in the Arctic. If it’s colder than 20 degrees Suyash will start to freeze, but if the room gets hotter than 25 degrees Penny will get very very hot!
+						Suyash doesn’t own a thermometer, but Penny brought her Engduino round with her. In this tutorial, we will teach you how to build a simple thermometer that will go red if it’s too hot, or blue if it’s too cold.
+						</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+
+}
+
+void loop(){
+
+}
+</code></pre>
+
+						<p class="lead">The Engduino comes with a built-in thermistor, which is a little electronic device that affects how a circuit works depending on the temperature.
+						This means we can use the thermistor as a temperature sensor. To use the thermistor, we need to include the library with all the great functions that people have already written for us at the top of the program. </p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+	void setup() {
+		EngduinoThermistor.begin();
+		EngduinoLEDs.begin();
+
+	}
+
+	void loop(){
+
+	}
+</code></pre>
+
+						<p class="lead">
+						We then need to turn on the thermistor by calling the begin function on it, so that we can start measuring temperature with it later on, and we also need to do the same with the LEDs so like we did in the previous tutorial.
+						</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+	EngduinoThermistor.begin();
+	EngduinoLEDs.begin();
+	Serial.begin(9600);
+}
+
+void loop(){
+}
+</code></pre>
+
+
+						<p class="lead">
+						Next, we need to set up a connection between the Engduino and a computer so that we can send the temperature values from the Engduino back to our computer. To do this, we use the Serial port; this is the USB port that you plug your Engduino into.
+						We need to set up the Serial port so that it matches our particular Engduino board; this line in red sets the serial port to 9600, which is the speed that our board can send and receive messages.
+						</p>
+
+<pre><code>void loop() {
+	float temp = EngduinoThermistor.temperature();
+ }
+</code></pre>
+
+<p class="lead">
+Now we can get the thermistor on the Engduino to measure the temperature of the room (or whatever is touching the thermistor!) We do this by calling the .temperature(); function on the thermistor.
+We need to store this temperature value in a variable, so we can use it later on in our program - this is what temp is. Float means that the temperature can be stored as a decimal number, so it is more accurate.
+</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+	EngduinoThermistor.begin();
+	EngduinoLEDs.begin();
+	Serial.begin(9600);
+
+}
+
+void loop(){
+	float temp = EngduinoThermistor.temperature();
+	Serial.print("The temperature is: ");
+	Serial.print(temp);
+	Serial.println(" C");
+}
+</code></pre>
+
+
+						<p class="lead">
+						Next, we want to be able to see what the temperature value is! So we use the serial port that we talked about to display information on the computer screen. This is what print does - it ‘prints’ the information in the brackets to a small screen if your Engduino is plugged into the serial port.
+						So if the value of temp was 25 for example, this bit of code would display “The temperature is 25 *C” on the screen!
+						</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+	EngduinoThermistor.begin();
+	EngduinoLEDs.begin();
+	Serial.begin(9600);
+
+}
+
+void loop(){
+	float temp = EngduinoThermistor.temperature();
+	Serial.print("The temperature is: ");
+	Serial.print(temp);<
+	Serial.println(" C");
+}
+
+if(temp>20 && temp<25){
+	EngduinoLEDs.setAll(GREEN, 5);
+}
+</code></pre>
+
+
+						<p class="lead">
+						This is all well and good, but if we don’t have our Engduino plugged into our computer, then we have no idea what the temperature is! So the first thing we will do is make all of the LEDs flash green when the room is at a good temperature for both Penny and Suyash.
+						As long as the temperature is over 20 degrees then Suyash will not freeze, and as long as the room is colder than 25 degrees then Penny will not overheat. So this is our ideal range for our temp value. <br>
+
+						So inside our if statement, we use the AND symbol && to say that if the temperature is over 20 degrees and also under 25 degrees, then do whatever we put inside the curly brackets. Inside the curly brackets, we use the EngduinoLEDs that we
+						set up earlier, and call the .setAll function on them. Inside the brackets, we say which colour we want the LEDs to go, which is green because this is the perfect temperature range. The number is the brightness of the LEDs, and 5 is a pretty average level of brightness.
+						</p>
+
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+	EngduinoThermistor.begin();
+	EngduinoLEDs.begin();
+	Serial.begin(9600);
+
+}
+
+void loop(){
+float temp = EngduinoThermistor.temperature();
+Serial.print("The temperature is: ");
+Serial.print(temp);
+Serial.println(" C");
+}
+
+if(temp>20 && temp<25){
+	EngduinoLEDs.setAll(GREEN, 5);
+}
+else if(temp<20){
+	EngduinoLEDs.setAll(BLUE, 5);
+	}
+else if(temp>25){
+	Engduino.setAll(RED, 5);
+	}
+</code></pre>
+
+
+						<p class="lead">
+						Now we want to do the same thing again, but for if the room is too hot or too cold. We use else if statements to say, if the room is not at the ideal temperature and is too cold, do one thing, or if it is too hot, do another thing. Here we are saying that if the room is less than
+						20 degrees, set all the LEDs to be blue, because the room is too cold. Or, if the room is over 25 degrees, set all the LEDs to red because the room is too hot.
+						</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+	EngduinoThermistor.begin();
+	EngduinoLEDs.begin();
+	Serial.begin(9600);
+
+}
+
+void loop(){
+	float temp = EngduinoThermistor.temperature();
+	Serial.print("The temperature is: ");
+	Serial.print(temp);
+	Serial.println(" C");
+}
+
+if(temp>20 && temp<25){
+	EngduinoLEDs.setAll(GREEN, 5);
+}
+
+else if(temp<20){
+	EngduinoLEDs.setAll(BLUE, 5);
+	}
+
+else if(temp>25){
+	Engduino.setAll(RED, 5);
+	}
+
+delay(1000);
+}
+</code></pre>
+
+						<p class="lead">
+						The last thing we need to do is add a delay of 1000 milliseconds at the bottom of the code, so it does not run too quickly and overload the tiny computer chip. Now this code will work perfectly! But for Penny and Suyash, who are super involved in learning more about how to code in C, they don’t notice the Engduino lighting up because the LEDs are not bright enough. The hotter the room gets, the more dangerous for Penny, and the colder it gets,
+						the more likely Suyash is to freeze! So to help them out, we can make the lights on our Engduino get brighter as the room gets hotter or colder.
+						</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoThermistor.h"
+
+void setup() {
+EngduinoThermistor.begin();
+EngduinoLEDs.begin();
+Serial.begin(9600);
+
+}
+
+void loop(){
+	float temp = EngduinoThermistor.temperature();
+	Serial.print("The temperature is: ");
+	Serial.print(temp);
+	Serial.println(" C");
+
+	if(temp>20 && temp<25){
+		EngduinoLEDs.setAll(GREEN, 5);
+	}
+	else if(temp<20){
+		EngduinoLEDs.setAll(BLUE, 5);
+	}
+	else if(temp>25){
+		Engduino.setAll(RED, 5);
+	}
+	else if(temp<20){
+		EngduinoLEDs.setAll(BLUE,5);
+	}
+	else if(temp<15){
+		EngduinoLEDs.setAll(BLUE,10);
+	}
+	else if(temp<10){
+		EngduinoLEDs.setAll(BLUE,15);
+	}
+	else if(temp>25){
+		EngduinoLEDs.setAll(RED,5);
+	}
+	else if(temp>30){
+		EngduinoLEDs.setAll(RED,10);
+	}
+	else if(temp>35){
+		EngduinoLEDs.setAll(RED,15);
+	}
+
+	delay(1000);
+}
+</code></pre><br>
+
+						<p class="lead">
+						So we can carry straight on from the code we had before, we only have to change the else statements that set the LED values when the temperature is too hot or too cold. The bigger the number in the brackets, the higher the brightness of the LED. So here we are saying that if the temperature falls below 20 degrees, set the LEDs to blue, but at an average brightness. If the temperature goes below 15, turn the brightness up 5 higher, and if the temperature falls below 10 degrees, turn the brightness up to the highest!!
+						Can you figure out what the final 3 else statements are doing? (Hint: it’s almost the same as the first 3 else statements, but the opposite!)
+						<br><br>So now we have a super great temperature sensor on our Engduino, how cool is that!!
+            </p>
+            <p class="lead"><u>Further problems:</u></p>
+            <ul>
+              <li style="font-size:18px">Can you figure out how to use Serial.print to print special messages if the temperature gets way too cold or way too hot?</li>
+              <li style="font-size:18px">Instead of using GREEN, RED and BLUE, can you find out the RGB colour values for these colours and use them instead? This gives you a massive range of different reds, greens and blues to choose from! </li>
+              <li style="font-size:18px">Instead of using lots and lots of if and else statements like we have here, can you research switch cases and use one of them instead?</li>
+            </ul>
+
+            <p class="lead"><u>Summary:</u></p>
+            <ul>
+              <li style="font-size:18px">Import EngduinoThermistor.h to use the thermistor</li>
+              <li style="font-size:18px">Use EngduinoThermistor.temperature() to get a temperature value and assign this to a variable</li>
+              <li style="font-size:18px"> Use Serial.print("<i>message</i>"); to print a message on the terminal</li>
+            </ul>
+            <p class="lead"><u>Further reading:</u></p>
+            <ul>
+              <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_Thermistor.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_Thermistor.pdf</a></li>
+            </ul>
+            <br>
+            <a href="Accelerometer.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="Light.html" class="btn btn-default">Previous</a><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+	</div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - Accelerometer</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/styles/default.css">
+	<script src="js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="LEDs.html">LEDs</a>
+              </li>
+              <li>
+                  <a href="Button.html">Button</a>
+              </li>
+              <li>
+                  <a href="Light.html">Light</a>
+              </li>
+              <li>
+                  <a href="Temperature.html">Temperature</a>
+              </li>
+              <li>
+                  <a href="#">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="InfraRed.html">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+						<div class="page-header">
+                        <h1>Accelerometer</h1>
+						</div>
+            <img src="img/accelerometer.png" height="45%" width="45%" align="right">
+
+                        <p class = "lead">
+                        It’s spring, and for the animal friends this means more than just the season of new baby animals; it’s also time for a Spring Clean! To clean the whole house properly, Suyash the Lion and Carlo the Caterpillar take down some of their furniture. “Oh no!” Suyash screams when it is time to put all the furniture back together. “It’s too hard to tell if all the pieces of the table are straight! Everytime I build it it’s wonky!” Suyash needs something that can show him straight away if something is not level.
+						Luckily, Carlo has his Engduino with him. We can show the animal friends how to create a program for the Engduino that makes it light up different colours when the Engduino tilts different ways.<br>
+                        <p class="lead"><u>Libraries to include: </u><p>
+
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoAccelerometer.h"
+#include "Wire.h"
+</code></pre>
+
+<br><p class="lead"><u>The setup: </u></p>
+
+<pre><code>void setup(){
+	EngduinoLEDs.begin();
+	EngduinoAccelerometer.begin();
+	Serial.begin(9600);
+}
+</code></pre>
+
+
+<br><p class="lead"><u>The main loop: </u><br>
+First we switch all the leds off using EngduinoLEDs.setAll(OFF) so that every time we start the loop we switch of any LEDs that are on. This makes sure that the LED for the right tilt is off if you move the engduino from right to left. If this code is ignored then if you move  from left to right the right LEDs and left LEDs would be on.<br>
+<br>
+Then we create a float array called xyz of size 3. This array will be used to contain the x, y and z coordinates read from the accelerometer. This is done by using the command EngduinoAccelerometer.xyz(xyz) which assigns the values of the 3 coordinates to this array. The x coordinate is stored in xyz[0], the y coordinate is stored in xyz[1] and the z coordinate is stored in xyz[2]. In the code if you see xyz[0] it means that we are using the x coordinate, If xyz[1] is used it means we are using the y coordinate and if xyz[2] is used it means we are using the z coordinate.<br>
+</p>
+
+<pre><code>void loop(){
+	EngduinoLEDs.setAll(OFF);
+	float xyz[3];
+	EngduinoAccelerometer.xyz(xyz); // Read the acceleration
+}
+</code></pre>
+
+<p class = "lead">
+Next we want to detect the way the engduino is facing. Depending on this, we will light up different colours in the direction that it has been tilted. Turning the device at different points will change the coordinates read by the accelerometer.
+Calculating the values of x,y and z at these different points can be quite difficult. Luckily, Penny the Penguin helped find the values and provided it to Suyash. So we can now progress forward!<br><br>
+Depending on the orientation of the Engduino, the values of the x,y and z coordinates are in a certain range. Using IF statements for the 4 possible orientations, UP, DOWN, LEFT and RIGHT, we give each one the appropriate range of values for x,y and z. <br><br>
+Each orientation has a set of LEDs with their own colour, and when the Engduino is facing that orientation, these are switched on. Like when the Engduino is pointed UP, we switch on LEDs 9,10,11,12 and 13 to red because these are on the UP side of the device.
+The delay is to pause the program for 50ms before we start the loop again.
+</p>
+
+<pre><code>void loop(){
+	EngduinoLEDs.setAll(OFF);
+	float xyz[3];
+	EngduinoAccelerometer.xyz(xyz); // Read the acceleration
+
+	// Engduino pointing UP
+	if (xyz[0] > 0.2 && xyz[0] < 1 && xyz[2] >-0.95 && xyz[2] 0) {
+		EngduinoLEDs.setLED(9, RED);
+		EngduinoLEDs.setLED(10, RED);
+		EngduinoLEDs.setLED(11, RED);
+		EngduinoLEDs.setLED(12, RED);
+		EngduinoLEDs.setLED(13, RED);
+	}
+
+	// Engduino pointing RIGHT
+	if (xyz[1] > 0.2&& xyz[1] < 1 && xyz[2] > -0.95 && xyz[2] 0) {
+		EngduinoLEDs.setLED(6, BLUE);
+		EngduinoLEDs.setLED(7, BLUE);
+		EngduinoLEDs.setLED(8, BLUE);
+		EngduinoLEDs.setLED(9, BLUE);
+	}
+
+	// Engduino pointing DOWN
+	if (xyz[0] > -1 && xyz[0] < -0.2&& xyz[2] >-0.95 && xyz[2] 0) {
+		EngduinoLEDs.setLED(1, GREEN);
+		EngduinoLEDs.setLED(2, GREEN);
+		EngduinoLEDs.setLED(3, GREEN);
+		EngduinoLEDs.setLED(4, GREEN);
+		EngduinoLEDs.setLED(5, GREEN);
+	}
+
+	// Engduino pointing LEFT
+	if (xyz[1] > -1 && xyz[1] < -0.2 && xyz[2] >-0.95 && xyz[2] 0) {
+		EngduinoLEDs.setLED(0, YELLOW);
+		EngduinoLEDs.setLED(15, YELLOW);
+		EngduinoLEDs.setLED(14, YELLOW);
+		EngduinoLEDs.setLED(13, YELLOW);
+	}
+	delay(50);
+}
+</code></pre>
+                        <p class="lead">
+                        Nice! So we can now use the accelerometer to detect the way the device is tilted and then take different actions accordingly using what we had already learned previously. Now Suyash the lion can make sure that the table is no longer wonky when he builds it. Great job! We are almost ready to take on the final task… but before that let’s see if you can do these cool challenges with the accelerometer to create even more interesting projects...<br>
+                        </p>
+                        <p class="lead"><u>Further problems:</u></p>
+						            <ul>
+                          <li style="font-size:18px">Show the xyz values in serial and see how each one changes as you turn the device.</li>
+                          <li style="font-size:18px">Create a spirit level - this should make the Engduino light up green if the device is perfectly level and red otherwise. Maybe you can use this in real life!</li>
+                          <li style="font-size:18px">Calculate the actual acceleration of the device. Can you remember a formula from maths that allows you to do this?</li>
+                        </ul>
+                        <p class="lead"><u>Summary</u></p>
+                        <ul>
+                          <li style="font-size:18px">You can read the each of the x,y and z values of the accelerometer by using the command EngduinoAccelerometer.xyz(xyz); to add these to an array  and calling xyz[0], xyz[1] and xyz[2] to access each one respectively.</li>
+                          <li style="font-size:18px">Using the x, y and z coordinates we can detect the way the device is facing because tilting the device one way will increase/ decrease these values depending on how it is turned.</li>
+                        </ul>
+                        <p class="lead"><u>Further Reading</u></p>
+                        <ul>
+                          <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduino_Accelerometer.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduino_Accelerometer.pdf</a></li>
+						            </ul>
+                        <br><br>
+                        <a href="InfraRed.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="Temperature.html" class="btn btn-default">Previous</a><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

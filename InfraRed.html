@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - Infra Red</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="css/styles/default.css">
+	<script src="js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="LEDs.html">LEDs</a>
+              </li>
+              <li>
+                  <a href="Button.html">Button</a>
+              </li>
+              <li>
+                  <a href="Light.html">Light</a>
+              </li>
+              <li>
+                  <a href="Temperature.html">Temperature</a>
+              </li>
+              <li>
+                  <a href="Accelerometer.html">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="#">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+					<div class="page-header">
+                        <h1>Infra Red Sensor</h1>
+						</div>
+            <img src="img/ir.png" height="45%" width="45%" align="right">
+<p class="lead">Suyash the lion is moving into his new cave which has Engduinos all over the walls. He wants to change the colour of the LEDS in each Endguino to make a pretty wall display. Luckily he has an extra Engduino that can be used as a remote to control the lights of the other Engduinos on the walls. In this tutorial we will show you how to create a light remote that can change the lights of another Engduino!
+
+Suyash’s remote can turn the other Engduino’s LEDs  into one of the  4 colours : RED, BLUE,  YELLOW or GREEN. In fact, by holding the button and releasing it at the desired colour, the remote will send the selected colour to the other Engduino, and that will have all its LEDS changed to that colour.
+
+The Engduino comes with a built in IR sensor. A communication between two  Engduinos is possible due to the IR sensors which can transmit or receive  information.
+
+The remote Engduino will be the sender and each of the Engduinos on the wall will be the receiver.
+
+The library files to include the IR Sensor and the LEDs function that we will use:
+
+</p>
+
+<pre><code>#include "EngduinoIR.h"
+#include "EngduinoLEDs.h"
+#include "EngduinoButtons.h"
+
+void setup(){
+EngduinoLEDs.begin();
+EngduinoButton.begin();
+EngduinoIR.begin();
+}
+
+void loop(){
+
+}</code></pre>
+
+<p class="lead">
+Let’s start by writing a code to turn the engduino into a remote. First we need to turn on the IR sensor by calling the begin function so our engduino can start sending and receiving information. We also need to turn on the button so we can use it to select a colour and send it.
+
+Then, we should add these variables outside of the functions, right after the include statements
+
+</p>
+
+<pre><code>char message;
+int i;
+char lights[4] = {'r', 'g', 'b', 'y'};</code></pre>
+
+<p class="lead">
+The message variable will hold a single character for a colour.
+
+<code>int i</code> is the itereator that will be used in the loop.
+
+The lights array stores the different characters that stand for each colour
+
+Our code will turn into this:
+
+</p>
+
+<pre><code>#include "EngduinoLEDs.h"
+#include "EngduinoButton.h"
+#include "EngduinoIR.h"
+
+char message;
+int i;
+char lights[4] = {'r', 'g', 'b', 'y'};
+
+void setup() {
+	EngduinoLEDs.begin();
+	EngduinoButton.begin();
+	EngduinoIR.begin();
+}
+</code></pre>
+
+<p class="lead">
+Next we need to create an if/else statement in the main loop that will specify whether the button is pressed or not. If the button is pressed the loop will iterate consecutively through our lights until the button is released. When the button is released the selected colour will be the message that is transmitted. While the button is not pressed, the message will be continuously sent via the IR sensor.
+</p>
+
+<pre><code>void loop() {
+	if(EngduinoButton.isPressed()){
+		for(i=0; i 4; i++){
+			message = lights[i];
+			setLights(message);
+			delay(500);
+		}
+
+		if(EngduinoButton.isPressed() break;
+
+	}
+
+	else{
+	EngduinoIR.send(message);	//send message
+	}
+}
+
+void setLights(char light){
+	switch(light){
+		case 'r':
+		EngduinoLEDs.setAll(RED);
+		break;
+		case 'g':
+		EngduinoLEDs.setAll(GREEN);
+		break;
+		case 'b':
+		EngduinoLEDs.setAll(BLUE);
+		break;
+		case 'y':
+		EngduinoLEDs.setAll(YELLOW);
+		break;
+		default:
+		EngduinoLEDs.setAll(OFF);
+		break;
+		}
+}
+</code></pre>
+
+<p class="lead">
+The set lights function is a helper function that takes in one of the characters and displays the corresponding colour.<code>engduinoIR.send(MESSAGE)</code> is the function that will send the IR message.
+</p>
+
+<p class="lead"><u>Further problems:</u></p>
+<ul>
+  <li style="font-size:18px"></li>
+  <li style="font-size:18px"></li>
+  <li style="font-size:18px"></li>
+</ul>
+<p class="lead"><u>Summary</u></p>
+<ul>
+  <li style="font-size:18px"></li>
+  <li style="font-size:18px"></li>
+</ul>
+<p class="lead"><u>Further Reading</u></p>
+<ul>
+  <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_IR.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_IR.pdf</a></li>
+</ul>
+<br><br>
+
+<a href="FinalProject.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="Accelerometer.html" class="btn btn-default">Previous</a><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - Button</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles/default.css">
+  	<script src="js/highlight.pack.js"></script>
+  	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="LEDs.html">LEDs</a>
+              </li>
+              <li>
+                  <a href="#">Button</a>
+              </li>
+              <li>
+                  <a href="Light.html">Light</a>
+              </li>
+              <li>
+                  <a href="Temperature.html">Temperature</a>
+              </li>
+              <li>
+                  <a href="Accelerometer.html">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="InfraRed.html">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <div class="page-header">
+                                  <h1>Button</h1>
+          						</div>
+                      <img src="img/tennis.png" height="45%" width="45%" align="right">
+                        <p class="lead">It’s sports day at Suyash the Lion’s school, and Suyash is one of the referee’s for Penny the Penguin and Carlo the Caterpillar’s game of tennis. Suyash is trying to score Penny’s points using a piece of paper and a pencil, but it’s so windy outside, that it keeps on blowing away! Carlo soon gets bored of having to start the game over, and remembers he brought his Engduino with him to school! Luckily, we can show the friends how to make a great counter using an Engdunio.</p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+}
+void loop() {
+
+}</code></pre>
+
+                        <p class="lead">To make our counter, we need to use the built-in button on the Engduino, so the first thing we have to do is <b>include the library</b> with all the stuff that will let us use it in our program. We’re also using the LEDs to show when we’re counting, so we need to include that library too. Then, just like we have before, we <b>call the begin function</b> on the sensors sensors so we can start using them!</p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+int red_counter;
+
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+  red_counter=0;
+}
+void loop() {
+
+}</code></pre>
+
+                        <p class="lead">The next thing we want to do is <b>define a variable</b>, red_counter. You can think of this variable sort of like a hand; each time we count up, we are going to add 1 to the red_counter, which is like putting up another finger on your hand. Most people start counting from 0, so we <b>assign the value</b> of 0 to the variable; this means that at the start of the program, red_counter starts off as 0.</p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+int red_counter;
+
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+  red_counter=0;
+}
+void loop() {
+  if (EngduinoButton.wasPressed()) {
+    red_counter++;
+  }
+}</code></pre>
+
+                        <p class="lead">Next, we need some code that will say whenever we press the button, one of the LEDs goes red - this is how our counter works! Each lit up LED is one point. EngduinoButton.wasPressed() will <b>evaluate to true</b> if the button is pressed by a user - if this happens, then we add one to red_counter by typing red_counter++. This is short notation for red_counter = red_counter + 1</p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+int red_counter;
+
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+  red_counter=0;
+}
+void loop() {
+  if (EngduinoButton.wasPressed()){
+    red_counter++;
+  }
+  EngduinoLEDs.setLED(red_counter, RED);
+}</code></pre>
+
+                        <p class="lead">Now that we can count upwards from 0 using our red_counter, we need to be able to show this on the Engduino. So each time the loop runs, we light up the LED that matches the number in the counter. So if the button is pressed once, red_counter will be set to 1, and we will set LED 1 to red. Then, if we press the button again, red_counter will go up again to 2, and we will light up LED 2. Run this code to see it for yourself!</p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+int red_counter;
+
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+  red_counter=0;
+}
+void loop() {
+  if(red_counter==16){
+    EngduinoLEDs.setAll(OFF);
+    red_counter=0;
+  }
+  if (EngduinoButton.wasPressed()){
+    red_counter++;
+  }
+  EngduinoLEDs.setLED(red_counter, RED);
+}</code></pre>
+
+                        <p class="lead">This could give us a problem if we try and count higher than 16; if red_counter = 17, and the code tries to set the 17th LED to red, we are going to get a nasty error because the 17th LED doesn’t exist! So we need some code to stop this from happening. Here, we say that when the red_counter gets to 16, we turn all the LEDs off and set the counter back to 0. So when the red_counter reaches it’s maximum, we just start again!</p>
+                        <p class="lead">Suyash, Carlo and Penny were really happy with this counter! All Suyash had to do was press a button to count up and keep track of Penny’s points. But for a penguin, Penny is really good at tennis, so she is on 17 points really quickly! To help out Suyash and his friends, we can edit our counter so that we can count much higher than just 16.</p>
+                        <p class="lead">The first thing we need to do is create a new counter variable, this time called blue_counter, and we set this to 0 just like we did with the red_counter. We’ll use this new blue_counter to carry on counting upwards once the red_counter has reached 16.To do this, we change this bit of our code, so that when the red_counter gets to 16, we start adding 1 to our blue counter.</p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+int red_counter;
+int blue_counter;
+
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+  red_counter=0;
+  blue_counter=0;
+}
+void loop() {
+  if(red_counter==16){
+    EngduinoLEDs.setAll(OFF);
+    red_counter=0;
+    blue_counter++;
+  }
+  if (EngduinoButton.wasPressed()){
+    red_counter++;
+  }
+  EngduinoLEDs.setLED(red_counter, RED);
+}</code></pre>
+
+                        <p class="lead">Now we just need some code to make the LEDs go blue. </p>
+
+<pre><code>#include "EngduinoButton.h"
+#include "EngduinoLEDs.h"
+int red_counter;
+int blue_counter;
+
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoButton.begin();
+  red_counter=0;
+  blue_counter=0;
+}
+void loop() {
+  if(red_counter==16){
+    EngduinoLEDs.setAll(OFF);
+    red_counter=0;
+    blue_counter++;
+  }
+  if (EngduinoButton.wasPressed()){
+    red_counter++;
+  }
+  else {
+    for(int x=0; x &lt blue_counter; x++) {
+      EngduinoLEDs.setLED(x, BLUE);}EngduinoLEDs.setLED(red_counter, RED);
+  }
+}</code></pre>
+
+                        <p class="lead"><u>Further problems:</u></p>
+                        <ul>
+                          <li style="font-size:18px">Make the Engduino show a color while the button is pressed. Once the button is released the color is no longer visible</li>
+                          <li style="font-size:18px">Make the Engduino into a traffic light. Every time a button is clicked, the light changes. (hint: it can only change from red->yellow, yellow->green, green->yellow and yellow->red) </li>
+                        </ul>
+
+                        <p class="lead"><u>Summary:</u></p>
+                        <ul>
+                          <li style="font-size:18px">Always include the EngduinoButton.h library or you won’t be able to use the Button in the program</li>
+                        </ul>
+
+                        <p class="lead"><u>Further reading:</u></p>
+                        <ul>
+                          <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_Button.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_Button.pdf</a></li>
+                        </ul>
+
+                        <a href="Light.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="LEDs.html" class="btn btn-default">Previous</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

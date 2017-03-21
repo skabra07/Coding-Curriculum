@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - LEDs</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles/default.css">
+  	<script src="js/highlight.pack.js"></script>
+  	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="#">LEDs</a>
+              </li>
+              <li>
+                  <a href="Button.html">Button</a>
+              </li>
+              <li>
+                  <a href="Light.html">Light</a>
+              </li>
+              <li>
+                  <a href="Temperature.html">Temperature</a>
+              </li>
+              <li>
+                  <a href="Accelerometer.html">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="InfraRed.html">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <div class="page-header">
+                                <h1>LEDs</h1>
+          						</div>
+                      <img src="img/race.png" height="45%" width="45%" align="right">
+                        <p class="lead">Suyash the lion and his friends want to see who can run further in ten seconds but there is no way they can measure the time. Good thing Suyash has an Engduino and found this grrrrreat website. We will show you in a simple tutorial how to turn your Engduino into a timer.</p>
+<pre><code>#include "EngduinoLEDs.h"
+void setup() {
+
+}
+void loop() {
+
+}</code></pre>
+                        <p class="lead">In C, there exist libraries with predefined functions. This helps us from writing those functions again. To incorporate these libraries we use the key word #include "file_Name.h". For the engduino, the super awesome programmers at UCL already made libraries so that lions ,like Suyash, can use it without making their own functions. Mostly, these functions help to control the sensors of the engduino. In this case, we included a library for using the LEDs on the engduino.</p>
+<pre><code>#include "EngduinoLEDs.h"
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoLEDs.setAll(GREEN);
+}
+
+void loop(){
+}</code></pre>
+                        <p class="lead">To call a function of the library we use the syntax <b>libraryName.functionName()</b>.<br>EngduinoLEDs.begin() - This function opens the LEDs so that they can receive voltage where a voltage of HIGH is on and LOW is off.<br>EngduinoLEDs.setAll(GREEN) - This function turns all the LEDs green.<br>You can upload your program right now and you should have a cool green light. But green is not a creative color so let us quickly move on. So in the beginning all the LEDs will be on and then we will turn off one LED after another, until all are off. We need the function "set.LED(LED_NUMBER, MODE)" to control a single light, whereas LED_NUMBER is a value from 0 to 15. The amount of time between  turning off one led and another is called the delay. this delay is crucial for us to build our timer .  Delay takes in a time in milliseconds, so we will have to calculate our delay by taking into account the  total time (in ms) divided by 16. I.n this case the total amount of time is 10ms.</p>
+                        <p class="lead">Voilà ! we have a timer. </p>
+<pre><code>#include "EngduinoLEDs.h"
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoLEDs.setAll(GREEN);
+}
+void loop(){
+  for(int i=15 ; i>=0 ; i--){
+    EngduinoLEDs.setLED(i,OFF);
+    delay(625);
+  }
+}</code></pre>
+                        <p class="lead">The timer is pretty much done, but wouldn't it be handy to have some sort of alarm going off, once the timer has finished? Well, the Engduino does not have sound but we can create a flashing light. Grrrreat. We can use a loop that will run forever onces the timer is done. In the body we will have a simple stating turning the LEDs on and off in a short amount of time.</p>
+<pre><code>#include "EngduinoLEDs.h"
+void setup() {
+  EngduinoLEDs.begin();
+  EngduinoLEDs.setAll(GREEN);
+}
+void loop(){
+  for(int i=15 ; i>=0 ; i--){
+    EngduinoLEDs.setLED(i,OFF);
+    delay(625);
+  }
+  while(1) {
+    EngduinoLEDs.setAll(RED);
+    delay(10);
+    EngduinoLEDs.setAll(OFF);
+    delay(10);
+  }
+}</code></pre>
+                        <br>
+                        <p class="lead">And there we go, now the race can finally begin! The friends realize that they want to be able to quickly change the amount of time the timer takes in. Maybe you should now modify the code and have time in a constant you can edit easily in the setup. Or just move on to the next section explaining you, how to use the button and explore even more super awesome fun adventures of Suyash the lion.</p>
+                        <br>
+                        <p class="lead"><u>Further problems:</u></p>
+                        <ul>
+                          <li style="font-size:18px">Make the LEDs fade in and out, changing colours maybe</li>
+                          <li style="font-size:18px">Make one LED chase/follow another LED</li>
+                          <li style="font-size:18px">Try changing the colour to salmon pink.</li>
+                        </ul>
+                        <br>
+                        <p class="lead"><u>Summary:</u></p>
+                        <ul>
+                          <li style="font-size:18px">Always include the EngduinoLEDs.h library or you won’t be able to use the LEDs in the program</li>
+                          <li style="font-size:18px">Make sure to turn on the LEDs that you will use  before writing your code</li>
+                          <li style="font-size:18px">EngduinoLEDs.setAll(color) = sets all the leds to that color</li>
+                          <li style="font-size:18px">EngduinoLEDs.set(i,color) where i is the pin number of LED.</li>
+                          <li style="font-size:18px">The full set of colours available to you is RED, GREEN, BLUE, YELLOW, MAGENTA, CYAN, WHITE and, although it's not strictly a colour, OFF.</li>
+                          <li style="font-size:18px">To know the pin of a LED there is a small number written next to the LED.</li>
+                          <li style="font-size:18px">You can also control the brightness by selecting a number that ranges from 0 (= off) to 15 (=brightest). To set the LEDs to a fairly dim YELLOW, we use: EngduinoLEDs.setAll(YELLOW, 2);</li>
+                        </ul>
+                        <br><br>
+                        <p class="lead"><u>Further reading:</u></p>
+                        <ul>
+                          <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_LEDs.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_LEDs.pdf</a></li>
+                          <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_for.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduinov2.1_for.pdf</a></li>
+                          <li style="font-size:18px"><a href="http://www.engduino.org/fileadmin/engduino/doc/Engduino_while.pdf">http://www.engduino.org/fileadmin/engduino/doc/Engduino_while.pdf</a></li>
+                        </ul>
+                        <br><br>
+
+                        <a href="Button.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="GettingStarted.html" class="btn btn-default">Previous</a><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>

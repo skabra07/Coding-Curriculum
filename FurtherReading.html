@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Engduino - C Cheat Sheet</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles/default.css">
+  	<script src="js/highlight.pack.js"></script>
+  	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+              <li class="sidebar-brand">
+                  <a href="index.html">
+                      Home Page
+                  </a>
+              </li>
+              <li>
+                  <a href="FurtherReading.html">C Cheat Sheet</a>
+              </li>
+              <li>
+                  <a href="GettingStarted.html">Getting Started</a>
+              </li>
+              <li>
+                  <a href="LEDs.html">LEDs</a>
+              </li>
+              <li>
+                  <a href="Button.html">Button</a>
+              </li>
+              <li>
+                  <a href="Light.html">Light</a>
+              </li>
+              <li>
+                  <a href="Temperature.html">Temperature</a>
+              </li>
+              <li>
+                  <a href="Accelerometer.html">Accelerometer</a>
+              </li>
+              <li>
+                  <a href="InfraRed.html">InfraRed</a>
+              </li>
+              <li>
+                  <a href="FinalProject.html">Final Project</a>
+              </li>
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <!-- Make sure to keep all page content within the page-content-wrapper -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                      <div class="page-header">
+                                  <h1>C Cheat Sheet</h1>
+          						</div>
+                        <h3>Variables</h3>
+                        <p>If you want to store a value, you put it in a variable. To use a variable, first you have to declare it in the format type <pre><code>variableName;</code></pre><br>
+                        <br>
+                        For example:<br>
+<pre><code>int myNumber;</code></pre><br>
+                        <br>
+                        At this stage, you can also initilise a variable, which means assign a value to the variable.<br>
+                        <br>
+                        For example:<br>
+<pre><code>char myString = ‘cat’;</code></pre><br>
+                        <br>
+                        If you have mutliple variables of the same type that you are declaring but not initialsing, you can list them next to each other<br>
+                        <br>
+                        For example:<br>
+<pre><code>float float1, float2, float3;
+float1 = 3.235; float2 = 4.567; float3 = 3.0;</code></pre></p>
+
+                        <h3>Input and Output</h3>
+                        <p>The two main ways you will input and output data is by asking the user to enter values and by displaying things on the console. You will need to put <pre><code> #include "stdio.h" </code></pre> at the top of your program to be able to use these functions.<br>
+                        <br>
+                        To display something on the console, use <pre><code>printf( );</code></pre><br>
+                        <br>
+                        If you just want to print out a string, you can do <pre><code>printf(“Hello”);</code></pre><br>
+                        <br>
+                        If you want to print a variable, use this format <pre><code>printf(“%formattingCharacter”, variable);</code></pre><br>
+                        <br>
+                        For example:<br>
+<pre><code>int myNumber = 10;
+printf(“My number is %d”, myNumber);</code></pre><br>
+                        This would print out “My number is 10”<br>
+                        <br>
+                        To make what you’re printing print on a new line, put <pre><code>\n</code></pre> inside the speech marks<br>
+                        <br>
+                        To take input from the user, use <pre><code>scanf(“%formattingCharacter”, &variableName”);</code></pre><br>
+                        <br>
+                        It’s a good idea to print something before using <pre><code>scanf</code></pre> to let your user know to enter something<br>
+                        <br>
+                        For example:<br>
+<pre><code>int favouriteNumber;
+printf(“Please enter your favourite number: “);
+scanf(“%d”, &favouriteNumber);</code></pre></p>
+
+                        <h3>Formatting Characters</h3>
+
+                        <h3>Arrays</h3>
+                        <p>Declaring an array in C is very similar to declaring a variable – the format for declaring an array is <pre><code>type arrayName[arraySize];</code></pre><br>
+                        <br>
+                        For example:<br>
+                        <pre><code>int myNumbers[5];</code></pre><br>
+                        <br>
+                        You can fill the array later on in different ways; either by filling all the spaces at once, or filling each index (position in the array) one by one<br>
+                        <br>
+                        For example: <br>
+                        <pre><code>myNumbers = {1, 2, 3, 4, 5};</code></pre> <i>Note the use of curly brackets</i><br>
+                        <pre><code>myNumbers[0] = 45;</code></pre><br>
+                        <br>
+                        Alternatively, when you declare the array, you can initliase it at the same time, remembering to use the curly brackets instead of the square brackets<br>
+                        <br>
+                        For example: <br>
+                        <pre><code>char myWords[ ] = {‘cat’, ‘dog’, ‘mouse’};</code></pre><br>
+                        <br>
+                        You can access the array elements by index, and do things like assign the value in the index to a variable or print the value in the index to the console <br>
+                        <br>
+                        For example:<br>
+                        <pre><code>char myFavouriteAnimal = myWords[1];</code></pre><br>
+                        <br>
+                        You can make multi-dimensional arrays by declaring them like this
+<pre><code>type arrayName[size1][size2][size3]…</code></pre> where
+<pre><code>size1</code></pre>
+                        is the size of the first dimension,
+<pre><code>size2</code></pre>
+                        is the size of the second dimension etc. <br>
+                        <br>
+                        A two-dimensional array with 3 rows and 2 columns might look like this for example;<br>
+                        <pre><code>int a[2][3]; </code></pre><br>
+                        <br>
+                        Two-dimensional arrays are the simplest type of multi-dimensional arrays, and can be thought of like this; <br>
+                        <img src="img/cheatSheet_1.jpeg"><br>
+                        <i>Image from https://www.tutorialspoint.com/cprogramming/c_multi_dimensional_arrays.htm </i>
+                        </p>
+
+                        <h3>If/Else Statements</h3>
+                        <p>An If/Else statement will do 1 thing if a given condition is true, or do something else if that statement is false. They are constructed like this: <br>
+                        <br>
+<pre><code>if(statement to be true or false){
+ do one thing;
+}
+else if(another statement to be true or false){
+  do another thing;
+}
+else{
+  do a different thing;
+}</code></pre><br>
+                        <br>
+                        You can have as many else if clauses as you want, but only one else clause in any if statement. You could have 0 else if statements and/or 0 else statements too if you need. <br>
+                        <br>
+                        The statements to be true or false often compare values, using operators: <br>
+                        <br>
+<pre><code>AND &&
+EQUALS ==
+NOT EQUAL !=
+OR ||</code></pre><br>
+                        <br>
+                        There is no between operator in C. <br>
+                        <br>
+                        In C, you can’t compare strings using <pre><code>==</code></pre>, so you have to use <pre><code>strcmp(str1, str2) or strncmp(str1, str2, n)</code></pre> functions instead. These are library functions, which means they are written by somebody else for you to use. At the top of your program you must put <pre><code>#include "stdlib.h"</code></pre> to access any library functions. <br>
+                        <br>
+                        <pre><code>strcmp</code></pre> and <pre><code>strncmp</code></pre> both take in two strings to compare to each other, but <pre><code>strncmp</code></pre> also takes in a number n, which is the number of characters from each string you want to compare. They both return either 0 if the strings are equal, or 1 if the strings are not equal<br>
+                        <br>
+                        For example: <br>
+<pre><code>char myWord = ‘cat’;
+char anotherWord = ‘catdog’;
+
+int isThisEqual = strcmp(myWord, anotherWord);
+int isThatEqual = strncmp(myWord, anotherWord, 3);</code></pre><br>
+                        <br>
+                        In this example, isThisEqual would be 1, and isThatEqual would be 0<br></p>
+
+                        <h3>Loops</h3>
+                        <p>There are two main types of loop used in C, a for loop and a while loop. A for loop will do a specific task a certain number of times, whereas a while loop will do a specific task indefinitely if a certain condition is true.<br>
+                        <br>
+                        A for loop is made up of a loop variable, a condition for the loop variable, and an increment or decrement statement for the loop variable. <br>
+                        <br>
+                        For example: <br>
+<pre><code>for(int i = 0; i 10; i = i +1){
+  count = count + 100;
+}</code></pre><br>
+                        <br>
+                        This piece of code will add 100 to a count variable 10 times. The loop variable i starts at 0. Each time the code in the for loop is run, i increases by 1. This will continue happening while i is less than 10; i.e., when i reaches 10, the code inside the for loop won’t run and the loop will have finished. <br>
+                        <br>
+                        Instead of writing i = i + 1, you can write i++. Similarly, you can write i-- to make i decrease by 1 each time the code runs. You don’t have to make i increase or decrease by 1 each time, you can pick any number you want e.g. i = i + 20<br>
+                        <br>
+                        A while loop is simpler, and is only made up of a condition.<br>
+                        <br>
+                        For example: <br>
+<pre><code>while(age 19){
+  printf(“I am still a teenager”);
+  age = age + 1;
+}</code></pre><br>
+                        <br>
+                        This code will carry on printing “I am still a teenager” as long as age is less than 19. Once age reaches 19, the while loop will finish. <br></code></pre>
+                        <br>
+                        <br>
+                        <a href="GettingStarted.html" class="btn btn-default">Next</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="index.html" class="btn btn-default">Previous</a><br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
