@@ -75,15 +75,19 @@
                         <h1>Infra Red Sensor</h1>
 						</div>
             <img src="img/ir.png" height="45%" width="45%" align="right">
-<p class="lead">Suyash the lion is moving into his new cave which has Engduinos all over the walls. He wants to change the colour of the LEDS in each Endguino to make a pretty wall display. Luckily he has an extra Engduino that can be used as a remote to control the lights of the other Engduinos on the walls. In this tutorial we will show you how to create a light remote that can change the lights of another Engduino!
+<p class="lead">Suyash the lion is moving into his new cave which has engduinos all over the walls, as lighting source. He wants to change the colour of the LEDs for each engduino .
+Luckily he has an engduino device in his hands that can be used to control the light colour  of the other Engduinos on the walls.
+<br><br>In this tutorial we will show you how to turn your engduino into a remote control that can change the colour of another Engduino’s LEDS !
+The engduino  can turn all of the other Engduino’s LEDs  into one of the 4 colours : RED , BLUE , YELLOW or GREEN .
+In fact, by holding the button , all of the LEDs will loop through the 4 colours and the button must be released at the desired colour.
+When the button is released , the remote will send the selected colour to the other Engduino : this device will have all of its LEDS changed to that colour.
+The Engduino comes with a built in IR sensor. A communication between two Engduinos is possible due to the IR sensors which can transmit or receive information .
+The remote Engduino will be the sender and each of the Engduinos on the wall will be the receiver.<br><br>
 
-Suyash’s remote can turn the other Engduino’s LEDs  into one of the  4 colours : RED, BLUE,  YELLOW or GREEN. In fact, by holding the button and releasing it at the desired colour, the remote will send the selected colour to the other Engduino, and that will have all its LEDS changed to that colour.
+Let’s start by writing a code to turn the Engduino into a remote control
+The library files to include the IR Sensor and the LEDs function that we will use :
 
-The Engduino comes with a built in IR sensor. A communication between two  Engduinos is possible due to the IR sensors which can transmit or receive  information.
 
-The remote Engduino will be the sender and each of the Engduinos on the wall will be the receiver.
-
-The library files to include the IR Sensor and the LEDs function that we will use:
 
 </p>
 
@@ -92,9 +96,10 @@ The library files to include the IR Sensor and the LEDs function that we will us
 #include "EngduinoButtons.h"
 
 void setup(){
+EngduinoIR.begin();
 EngduinoLEDs.begin();
 EngduinoButton.begin();
-EngduinoIR.begin();
+
 }
 
 void loop(){
@@ -102,15 +107,22 @@ void loop(){
 }</code></pre>
 
 <p class="lead">
-Let’s start by writing a code to turn the engduino into a remote. First we need to turn on the IR sensor by calling the begin function so our engduino can start sending and receiving information. We also need to turn on the button so we can use it to select a colour and send it.
+Let’s start by writing a code to turn the engduino into a remote.<br><br>
+First we need to <b>switch on the IR sensor</b> by calling the begin function so that our engduino can start sending and receiving information.
+We also need to <b>switch on the button</b> so we can use it to select a colour and send it , and <b>turn on the LEDS</b>.<br><br>
 
-Then, we should add these variables outside of the functions, right after the include statements
-
+We should add these variables outside of the functions ( right after the series of include )
 </p>
 
 <pre><code>char message;
 int i;
 char lights[4] = {'r', 'g', 'b', 'y'};</code></pre>
+
+<p class="lead"> <i>“char message”</i>  is a single character that stands for a colour .<br>
+<i>“int i”</i> is the iterator that will be used in the loop.<br>
+<i>“char lights”</i> is an array that stores the different characters that stand for a colour.<br>
+</p>
+
 
 <p class="lead">
 The message variable will hold a single character for a colour.
@@ -139,7 +151,7 @@ void setup() {
 </code></pre>
 
 <p class="lead">
-Next we need to create an if/else statement in the main loop that will specify whether the button is pressed or not. If the button is pressed the loop will iterate consecutively through our lights until the button is released. When the button is released the selected colour will be the message that is transmitted. While the button is not pressed, the message will be continuously sent via the IR sensor.
+Next we need to create an <b>if/else statement</b> in the main loop that will specify whether the button is pressed or not. If the button is pressed the loop will iterate consecutively through our lights until the button is released. When the button is released the selected colour will be the message that is transmitted. While the button is not pressed, the message will be continuously sent via the IR sensor.
 </p>
 
 <pre><code>void loop() {
@@ -181,19 +193,67 @@ void setLights(char light){
 </code></pre>
 
 <p class="lead">
-The set lights function is a helper function that takes in one of the characters and displays the corresponding colour.<code>engduinoIR.send(MESSAGE)</code> is the function that will send the IR message.
+<code>EngduinoIR.send(message)</code> is the function that will send the IR message which consits of a single character that corresponds to one of the 4 colours.<br>
+The setLights function is a helper function that takes in one of the characters and displays the corresponding colour.<br><br>
+
+Let’s write a code for the receiving Engduino :
+</p>
+
+<pre><code>#include <EngduinoLEDs.h>
+#include <EngduinoIR.h>
+
+char message;
+uint8_t buf[IRBUFSZ];
+
+void setup() {
+    EngduinoLEDs.begin();
+    EngduinoIR.begin();
+
+}
+
+void loop() {
+  int len = EngduinoIR.recv(buf);
+  if(len>=0)
+  {
+    message = buf[0];
+  }
+  setLights(message);
+}
+
+void setLights(char light){
+  switch(light){
+    case 'r': EngduinoLEDs.setAll(RED);
+              break;
+    case 'g': EngduinoLEDs.setAll(GREEN);
+              break;
+    case 'b': EngduinoLEDs.setAll(BLUE);
+              break;
+    case 'y': EngduinoLEDs.setAll(YELLOW);
+              break;
+    default:  EngduinoLEDs.setAll(OFF);
+              break;
+  }
+}
+</pre></code>
+
+<p class="lead">
+The message is stored in the buffer,
+The <code>EngduinoIR.recv(buf)</code>function checks if there is a message in the buffer.
+if there is a message, the setLights function will be called, take in as an input the message and turn the LEDS into to the corresponding colour.
 </p>
 
 <p class="lead"><u>Further problems:</u></p>
 <ul>
-  <li style="font-size:18px"></li>
-  <li style="font-size:18px"></li>
-  <li style="font-size:18px"></li>
+  <li style="font-size:18px">Make an Engduino send the word “Hello” when a button is pressed</li>
+  <li style="font-size:18px">Modify the code you learned to make a laser tag game.</li>
+  <li style="font-size:18px">Send your name from one Engduino and display it on another Engduino using terminal</li>
 </ul>
 <p class="lead"><u>Summary</u></p>
 <ul>
-  <li style="font-size:18px"></li>
-  <li style="font-size:18px"></li>
+  <li style="font-size:18px">Include EngduinoIR to use the infra red sensors</li>
+  <li style="font-size:18px">You can send using data or receive data using the infra red sensor</li>
+  <li style="font-size:18px">Use <i>engduinoIR.send(message)</i> to send a message using the Engduino</li>
+  <li style="font-size:18px">Use <i>EngduinoIR.recv(buf)</i> to receive a message and save it to a buffer</li>
 </ul>
 <p class="lead"><u>Further Reading</u></p>
 <ul>
